@@ -1,11 +1,12 @@
 package services
 
 import (
-	"fmt"
 	"io"
 	"log"
+	"net/http"
 	"os"
 
+	"github.com/gin-gonic/gin"
 	"github.com/pkg/sftp"
 )
 
@@ -17,54 +18,56 @@ func Put(client *sftp.Client) {
 	if err != nil {
 		log.Fatal("Failed to open local file: ", err)
 	}
-	
+
 	remotePath, err1 := client.Create("sftp/testint/sample.go.json")
 	if err1 != nil {
 		log.Fatal("Failed to create remote file: ", err1)
 	}
-	
+
 	_, err2 := io.Copy(remotePath, localFile)
 	if err != nil {
 		log.Fatal("Failed to put file: ", err2)
 	}
 }
 
-
 //get "filename" localpath
 //get file from remote to local
 
-func Get(client *sftp.Client){
-	localPath,err := os.Create("/home/vasenth/Documents/umamaheswari/sample1.go.json")
+func Get(client *sftp.Client) {
+	localPath, err := os.Create("/home/vasenth/Documents/umamaheswari/sample1.go.json")
 	if err != nil {
 		log.Fatal("Failed to create local file: ", err)
 	}
 
-	remoteFile,err1 := client.Open("sftp/testint/sample.json")
+	remoteFile, err1 := client.Open("sftp/testint/sample.json")
 	if err1 != nil {
 		log.Fatal("Failed to open remote file: ", err1)
 	}
 
-	_,err2 := io.Copy(localPath,remoteFile)
+	_, err2 := io.Copy(localPath, remoteFile)
 	if err2 != nil {
 		log.Fatal("Failed to put file: ", err2)
 	}
 
 }
 
-func List(client *sftp.Client, remotePath string){
+func List(c *gin.Context, client *sftp.Client, remotePath string) {
 
 	files, err := client.ReadDir(remotePath)
-	if err != nil{
-		log.Fatal("Unable to list remote dir: ",err)
+	if err != nil {
+		log.Fatal("Unable to list remote dir: ", err)
 	}
 
-	for _,f := range files{
+	var files_lst []string
+
+	for _, f := range files {
 		var name string
 		name = f.Name()
 
-		if f.IsDir(){
+		if f.IsDir() {
 			name = name + "/"
 		}
-		fmt.Println(name)
+		files_lst = append(files_lst, name)
 	}
+	c.JSON(http.StatusOK, gin.H{"files_lst": files_lst})
 }
