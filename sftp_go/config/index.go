@@ -10,15 +10,15 @@ import (
 
 func SftpClient()(*sftp.Client) {
 	config := &ssh.ClientConfig{
-		User: "netsys",
+		User: "username",
 		Auth: []ssh.AuthMethod{
-			ssh.Password("Netsys@4321!"),
+			ssh.Password("password"),
 		},
 		HostKeyCallback: ssh.InsecureIgnoreHostKey(),
 	}
 
 	//client connection to ssh server with the given network address
-	conn, err := ssh.Dial("tcp", "18.216.98.58:22", config)
+	conn, err := ssh.Dial("tcp", "hostname", config)
 	if err != nil {
 		log.Fatal("Failed to dial: ", err)
 	}
