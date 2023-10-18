@@ -21,14 +21,16 @@ func main() {
 	defer conn.Close()
 
 	client := pb.NewSftpServiceClient(conn)
-	res, err := client.List(context.Background(), &pb.RemotePathRequest{
+	res, err1 := client.List(context.Background(), &pb.RemotePathRequest{
 		RemotePath: RPath,
 	})
-	if err != nil {
+	fmt.Println("list called")
+
+	if err1 != nil {
 		fmt.Println("Cant get the files")
 	}
 
-	fmt.Println(res.Files)
+	 fmt.Println(res.Files)
 }
 
 

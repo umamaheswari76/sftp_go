@@ -22,13 +22,15 @@ type server struct {
 }
 
 func (s *server) List(ctx context.Context,req *pb.RemotePathRequest) (*pb.Response, error) {
+	// fmt.Println("0")
 	files, err := sftpClient.ReadDir(req.RemotePath)
 	if err != nil {
 		log.Fatal("Unable to list remote dir: ", err)
 	}
 
+	// fmt.Println("1")
 	var files_lst []string
-	var response *pb.Response
+	var response pb.Response
 
 	for _, f := range files {
 		var name string
@@ -40,7 +42,8 @@ func (s *server) List(ctx context.Context,req *pb.RemotePathRequest) (*pb.Respon
 		files_lst = append(files_lst, name)
 	}
 	response.Files = files_lst
-	return response,nil
+	// fmt.Println(response.Files)
+	return &response,nil
 }
 
 func main() {
