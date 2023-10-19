@@ -21,7 +21,7 @@ type server struct {
 	pb.UnimplementedSftpServiceServer
 }
 
-func (s *server) List(ctx context.Context,req *pb.RemotePathRequest) (*pb.Response, error) {
+func (s *server) List(ctx context.Context, req *pb.RemotePathRequest) (*pb.Response, error) {
 	// fmt.Println("0")
 	files, err := sftpClient.ReadDir(req.RemotePath)
 	if err != nil {
@@ -43,7 +43,7 @@ func (s *server) List(ctx context.Context,req *pb.RemotePathRequest) (*pb.Respon
 	}
 	response.Files = files_lst
 	// fmt.Println(response.Files)
-	return &response,nil
+	return &response, nil
 }
 
 func main() {

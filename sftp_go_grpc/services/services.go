@@ -17,15 +17,15 @@ import (
 func Put(client *sftp.Client) {
 	localFile, err := os.Open("/home/vasenth/Documents/umamaheswari/sample.go.json")
 	if err != nil {
-		log.Fatal("Failed to open local file: ", err)
-	}
-
-	remotePath, err1 := client.Create("sftp/testint/sample.go.json")
-	if err1 != nil {
+		log.Fatal("Fail
 		log.Fatal("Failed to create remote file: ", err1)
 	}
 
-	_, err2 := io.Copy(remotePath, localFile)
+	_, err2 := io.Copy(remoteed to open local file: ", err)
+	}
+
+	remotePath, err1 := client.Create("sftp/testint/sample.go.json")
+	if err1 != nil {Path, localFile)
 	if err != nil {
 		log.Fatal("Failed to put file: ", err2)
 	}
@@ -49,11 +49,9 @@ func Get(client *sftp.Client) {
 	if err2 != nil {
 		log.Fatal("Failed to put file: ", err2)
 	}
-
 }
 
 func List(c *gin.Context, client *sftp.Client, remotePath string) {
-
 	files, err := client.ReadDir(remotePath)
 	if err != nil {
 		log.Fatal("Unable to list remote dir: ", err)
