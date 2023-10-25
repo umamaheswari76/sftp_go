@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+option go_package = "github.com/umamaheswari76/sftp_go";
+
+package sftp;
+
+service SftpService {
+    rpc List (RemotePathRequest) returns (Response){}
+}
+
+message RemotePathRequest {
+    string RemotePath =1;
+}
+
+message Response {
+    repeated string Files =1;
+}
